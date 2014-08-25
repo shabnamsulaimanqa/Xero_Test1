@@ -12,7 +12,7 @@ class XeroAdd < Test::Unit::TestCase
     @content_name = Time.new.to_i
      @item_code = Time.new.to_i # to insert unique item code
      @item_description = Time.new.to_i # to insert unique item code
-
+         @date = Date.today()
     self.login($ADMIN_USER, $ADMIN_PASS)
 
   end
@@ -42,15 +42,12 @@ self.click_link_when_clickable('Accounts', false, false) # to select accounts ta
     sleep 5
     self.click_link_when_clickable('Dashboard', false, false) # to select sales
 
-    self.click_when_clickable('#keyAR')
     sleep 5
-
- element =@driver.find_element(:css, "*[id^='PaidToName'][id$='Value']")
- element.send_key("my test")
-
   self.click_when_clickable('#keyAR')
         #to create three invoice
-
+ self.set_text_value('div.invoicing-details input' ,"my value",true)
+ self.set_text_value('#ext-gen38',  "#{@date}",true)
+  self.set_text_value('#ext-gen44',  "#{@date+10}",true)
     $i=1
           $num=3
   self.set_text_value('#ext-comp-1002.x-form-textarea.x-form-field' ,"#{@item_code}",true) # to set item code
