@@ -4,7 +4,7 @@ $:.unshift File.join(File.dirname(__FILE__),'..','lib')
 require 'test/unit'
 require "selenium-webdriver"
 require 'rubygems'
-require 'ci/reporter/rake/test_unit_loader.rb'
+# require 'ci/reporter/rake/test_unit_loader.rb'
 #require 'json'
 
 $ADMIN_USER = "shabnam17+1@gmail.com"
@@ -13,7 +13,8 @@ $ADMIN_PASS = "shab1234"
 class Test::Unit::TestCase
 
   def setup
-    @driver = Selenium::WebDriver.for :firefox
+    #@driver = Selenium::WebDriver.for :chrome
+     @driver = Selenium::WebDriver.for :firefox
     @base_url = "https://login.xero.com/"
     @driver.manage.timeouts.implicit_wait = 30
     @verification_errors = []
@@ -33,10 +34,7 @@ class Test::Unit::TestCase
   def login(username, password)
     self.home()
      @driver.manage.timeouts.implicit_wait = 30
-    self.set_text_value('#email', username, true)
-    self.set_text_value('#password', password, true)
-    self.click_when_clickable('#submitButton')
-    self.wait_until_clickable('#main-content')
+
   end
 
   def set_text_value(css, value, clear) # use this to set value for any text field
@@ -75,7 +73,7 @@ def wait_until_clickable(css)
     end
   end
 
- 
+
   def click_link_when_clickable(link_text, partial, within)
     element = self.wait_until_link_clickable(link_text, partial, within)
     self.click_when_clickable(element)
