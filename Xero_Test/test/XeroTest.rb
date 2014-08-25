@@ -12,6 +12,7 @@ class XeroAdd < Test::Unit::TestCase
     @content_name = Time.new.to_i
      @item_code = Time.new.to_i # to insert unique item code
      @item_description = Time.new.to_i # to insert unique item code
+
     self.login($ADMIN_USER, $ADMIN_PASS)
 
   end
@@ -25,40 +26,42 @@ def home()
     self.set_text_value('#email', username, true)
     self.set_text_value('#password', password, true)
     self.click_when_clickable('#submitButton')
-    
+
   end
 
   def test_xero_invoice
-    sleep 10
+    sleep 5
 
-#    el = @driver.find_element(:xpath, "//*[@id='node_list']")
-#@driver.mouseOver(el).perform()
+ self.click_link_when_clickable('Reports', false, false) # to select Report tab
+ sleep 5
+self.click_link_when_clickable('All Reports', false, false)
+ sleep 5
+self.click_link_when_clickable('Accounts', false, false) # to select accounts tab
+    sleep 5
+    self.click_link_when_clickable('Sales', false, false) # to select sales
+    sleep 5
+    self.click_link_when_clickable('Dashboard', false, false) # to select sales
 
-
-# self.click_link_when_clickable('Reports', false, false)
-## @driver.find_element(:id => "All Reports")
-#@driver.action.move_to('Reports').click('All Reports').perform
-#
-##    self.click_link_when_clickable('All Reports', false, false)
-##    self.click_link_when_clickable('All Reports', false, false)
-#    sleep 10
-#    self.click_link_when_clickable('Accounts', false, false) # to select accounts tab
-    sleep 10
     self.click_when_clickable('#keyAR')
-    
-    $i = 1
-$num=10
-while $i <= $num  do
-  self.set_text_value('#PaidToName_92064e8fb98d414faeb65bcaca4b471a_value', "#{@content_name}",true)
+    sleep 5
 
+ element =@driver.find_element(:css, "*[id^='PaidToName'][id$='Value']")
+ element.send_key("my test")
 
-  self.select_text('#ext-comp-1001' ,"#{@item_code}",true) # to create item
-    self.set_text_value('#Code',"#{@item_code}",true) 
-    self.set_text_value('#edit-description', "Description is #{@item_description}",true)
-    self.select_text('#PurchasesAccount_value', 'PurchasesAccount_value')
-    self.click_when_clickable('#GSTCode_value')
-   $i +=1
-    end
+  self.click_when_clickable('#keyAR')
+        #to create three invoice
+
+    $i=1
+          $num=3
+  self.set_text_value('#ext-comp-1002.x-form-textarea.x-form-field' ,"#{@item_code}",true) # to set item code
+    self.set_text_value('#ext-gen67', "my description#{@item_description}", true) # To insert Desc in description field
+     self.set_text_value('#ext-comp-1004' ,i,true) # to set Qty for an item 1..3
+     self.set_text_value('#ext-gen85',"200",true)
+
+          $i +=1
+
+    self.click_when_clickable('a.words')
+  end
   end
   def element_present?(how, what)
     @driver.find_element(how, what)
@@ -92,4 +95,5 @@ while $i <= $num  do
   ensure
     @accept_next_alert = true
   end
-end
+
+
